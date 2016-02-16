@@ -4,24 +4,34 @@
 # DEAL_II_GIT_BRANCH=   master
 # DEAL_II_GIT_SHORTREV= 6bdde74
 subsection ALE Navier Stokes Interface
+  # Physical parameters:
+  set nu [Pa s]                        = .1
+  set rho [Kg m^-d]                    = 1.0
+
+  set AMG d - aggregation threshold    = 0.2
+  set AMG d - smoother sweeps          = 2
+  set AMG u - aggregation threshold    = 0.02
+  set AMG u - smoother sweeps          = 2
+  set AMG v - aggregation threshold    = 0.02
+  set AMG v - smoother sweeps          = 2
+
   set Block of differential components = 1,1,1,0
   set Blocking of the finite element   = d,d,v,v,u,u,p
+
   set Finite element space             = FESystem[FE_Q(1)^d-FE_Q(1)^d-FE_Q(2)^d-FE_Q(1)]
-  set nu [Pa s]                        = 1.0
-  set rho [Kg m^-d]                    = 1.0
 end
 subsection Dirichlet boundary conditions
   # set IDs and component masks = 1 = d % 2 = d % 4 = d
   # set IDs and expressions     = 1 = 0;0;0;0;0 % 2=0;0;0;0;0 % 4 = 0;0.25*sin(4*t);0;0;0
-  set IDs and component masks =  1=ALL % 3=ALL % 4=ALL
+  set IDs and component masks =  1=d;v;u % 3=d;v;u % 4=d;v;u
   set IDs and expressions     =   3=0;0;0;0;0;0;0 % \
                                   4=0;0;0;0;0;0;0 % \
-                                  1=0;0;0;0;k*t;0;0
+                                  1=0;0;0;0; t<k ? (1+y) * ( 1/k ) * t: 1; 0;0
   set Known component names   = d,d,v,v,u,u,p
-  set Used constants          = k=1
+  set Used constants          = k=.2
 end
 subsection Nietsche boundary conditions
-  set IDs and component masks = 5=d
+  set IDs and component masks = 5=d;v
   set IDs and expressions     =
   set Known component names   = d,d,v,v,u,u,p
   set Used constants          = 
@@ -86,7 +96,7 @@ subsection Zero average constraints
 end
 subsection piDoMUS
   set Adaptive refinement                            = true
-  set Initial global refinement                      = 2
+  set Initial global refinement                      = 3
   set Jacobian solver tolerance                      = 1e-8
   set Maximum number of time steps                   = 10000
   set Number of cycles                               = 1
