@@ -26,16 +26,18 @@ subsection Dirichlet boundary conditions
   set IDs and component masks =  1=d;v;u % 3=d;v;u % 4=d;v;u
   set IDs and expressions     =   3=0;0;0;0;0;0;0 % \
                                   4=0;0;0;0;0;0;0 % \
-                                  1=0;0;0;0; t<k ? (1+y) * ( 1/k ) * t: 1; 0;0
+                                  1=0;0;0;0; (1-y)*(1+y)*max_speed * ( t<k ? ( 1/k ) * t * ( 1 + sin(2*pi*t*y) ) / 2: ( 1 + sin(period*2*pi*t*y) ) / 2 ); 0;0
   set Known component names   = d,d,v,v,u,u,p
-  set Used constants          = k=.2
+  set Used constants          = k=.1, period=4, max_speed=10
 end
+
 subsection Nietsche boundary conditions
-  set IDs and component masks = 5=d;v
+  set IDs and component masks = 5=d;v;u
   set IDs and expressions     =
   set Known component names   = d,d,v,v,u,u,p
   set Used constants          = 
 end
+
 subsection Domain
   set Grid to generate           = file
   set Input grid file name       = \
