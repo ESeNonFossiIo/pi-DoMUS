@@ -313,7 +313,7 @@ assemble_local_forces(
                 - p * Id + nu * sym_grad_u;
 
               Tensor<1, dim, double> force = sigma * n * JxW[q];
-              data.local_force[1] -= force[1];
+              data.local_force[1] -= force[1]; // Minus is due to normal issue..
 
             } // end loop over quadrature points
           break;
@@ -342,6 +342,7 @@ output_solution (const unsigned int &current_cycle,
 
   this->data_out.write_data_and_clear(this->get_mapping());
 
+  
   pcout << " Mean force value on the sphere (vertical value): "
         << output_force[1]
         << std::endl;
