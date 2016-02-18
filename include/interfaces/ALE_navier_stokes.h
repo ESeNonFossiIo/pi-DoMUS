@@ -184,7 +184,7 @@ declare_parameters (ParameterHandler &prm)
   this->add_parameter(prm, &use_mass_matrix_for_d_dot,
                       "Use mass matrix for d_dot", "true",
                       Patterns::Bool(),
-                      "Use d_dot mass matrix to close the system\n",
+                      "Use d_dot mass matrix to close the system \n"
                       "If false it uses the stifness matrix");
 
   this->add_parameter(prm, &Amg_data_d_smoother_sweeps,
