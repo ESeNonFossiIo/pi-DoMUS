@@ -41,7 +41,7 @@ subsection ALE Navier Stokes Interface
 
   set Use mass matrix for d_dot        = false
 
-  set Invert Mp using inverse operator = false
+  set Invert Mp using inverse operator = true
   
   set AMG d - aggregation threshold    = .2
   set AMG d - smoother sweeps          = 2
@@ -102,7 +102,7 @@ subsection IMEX Parameters
   set Absolute error tolerance                     = 1e-8
   set Relative error tolerance                     = 1e-6
   
-  set Final time                                   = 10
+  set Final time                                   = .1
   set Initial time                                 = 0
 
   set Intervals between outputs                    = 1

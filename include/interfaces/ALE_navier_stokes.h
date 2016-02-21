@@ -48,7 +48,7 @@ struct CopyForce
 
   ~CopyForce ()
   {};
-  
+
   CopyForce (const CopyForce &data)
     :
     local_force(data.local_force)
@@ -196,7 +196,7 @@ declare_parameters (ParameterHandler &prm)
                       "Invert Mp using inverse operator", "false",
                       Patterns::Bool(),
                       "Invert Mp usign inverse operator");
-  
+
   this->add_parameter(prm, &Amg_data_d_smoother_sweeps,
                       "AMG d - smoother sweeps", "2",
                       Patterns::Integer(0),
@@ -712,9 +712,9 @@ ALENavierStokes<dim,spacedim,LAC>::compute_system_operators(
   else
     {
       Mp_inv = linear_operator<BVEC>(matrices[1]->block(3,3),
-                                    *P33_preconditioner);
+                                     *P33_preconditioner);
     }
-  
+
   auto Schur_inv = nu * Mp_inv;
 
   if (Amg_d_use_inverse_operator)
