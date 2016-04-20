@@ -133,25 +133,25 @@ PoissonProblem<dim,spacedim,LAC>::compute_system_operators(const std::vector<sha
                                                            LinearOperator<LAPETSc::VectorType> &) const
 {
 
-  // PETSc_preconditioner.reset  (new PETScWrappers::PreconditionJacobi());
-  // PETSc_preconditioner->initialize(matrices[0]->block(0,0));
-  // 
+  PETSc_preconditioner.reset  (new PETScWrappers::PreconditionJacobi());
+  PETSc_preconditioner->initialize(matrices[0]->block(0,0));
+  //
   auto A  = linear_operator<LAPETSc::VectorType::BlockType>( matrices[0]->block(0,0) );
-  // 
+  //
   // LinearOperator<LAPETSc::VectorType::BlockType> P_inv;
-  // 
-  // P_inv = A; //linear_operator<LAPETSc::VectorType::BlockType>(matrices[0]->block(0,0), *PETSc_preconditioner);
-  // 
+  //
+  auto Id = identity_operator(A.reinit_range_vector); //linear_operator<LAPETSc::VectorType::BlockType>(matrices[0]->block(0,0), *PETSc_preconditioner);
+  //
   // auto P00 = P_inv;
-  // 
+  //
   // // ASSEMBLE THE PROBLEM:
   system_op  = block_operator<1, 1, LAPETSc::VectorType>({{
       {{ A }}
     }
   });
-  
+
   prec_op = block_operator<1, 1, LAPETSc::VectorType>({{
-      {{ A }} ,
+      {{ Id }} ,
     }
   });
 }
