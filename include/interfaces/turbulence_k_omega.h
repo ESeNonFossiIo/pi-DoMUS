@@ -239,7 +239,7 @@ set_matrix_couplings(std::vector<std::string> &couplings) const
   //couplings[0] = "1,1,1,1;1,1,1,1;1,1,1,1"; // Direct solver uses block(1,0)
   //couplings[1] = "0,0,0,0;0,1,0,0;0,0,0,0";
   //couplings[2] = "0,0,0,0;0,1,0,0;0,0,0,0";
-  couplings[0] = "1,1,1,1; 1,1,1,1; 1,1,1,1; 1,1,1,1";
+  couplings[0] = "1,1,1,1; 1,0,1,1; 1,1,1,1; 1,1,1,1";
   couplings[1] = "0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0";
   couplings[2] = "0,0,0,0; 0,1,0,0; 0,0,0,0; 0,0,0,0"; // TODO: fix me!
 }

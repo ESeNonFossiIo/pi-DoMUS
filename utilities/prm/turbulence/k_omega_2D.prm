@@ -1,5 +1,5 @@
 subsection Amg for A
-  set Aggregation threshold              = 10
+  set Aggregation threshold              = 2
   set Coarse type                        = Amesos-KLU
   set Elliptic                           = true
   set High Order Elements                = false
@@ -170,7 +170,7 @@ subsection KINSOL for IMEX
   set Tolerance for residuals                            = 1e-6
 
   # If true the dense direct linear solver of KINSOL is used
-  set Use internal KINSOL direct solver                  = true
+  set Use internal KINSOL direct solver                  = false
 end
 
 subsection Initial solution
@@ -189,7 +189,7 @@ end
 
 subsection piDoMUS
   set Use direct solver if available                 = true
-  set Initial global refinement                      = 6
+  set Initial global refinement                      = 8
   set Jacobian solver tolerance                      = 1e-6
 
   set Max iterations                                 = 20
@@ -198,8 +198,8 @@ subsection piDoMUS
     
   set Time stepper                                   = euler
 
-  set Adaptive refinement                            = true
-  set Refine mesh during transient                   = true
+  set Adaptive refinement                            = false
+  set Refine mesh during transient                   = false
   set Threshold for solver's restart                 = 0.6
   
   set Maximum number of time steps                   = 10000
