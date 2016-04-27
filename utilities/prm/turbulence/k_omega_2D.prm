@@ -1,7 +1,7 @@
 subsection Amg for A
   set Aggregation threshold              = 2
   set Coarse type                        = Amesos-KLU
-  set Elliptic                           = true
+  set Elliptic                           = false
   set High Order Elements                = false
   set Number of cycles                   = 1
   set Output details                     = false
@@ -69,7 +69,8 @@ subsection k-omega
   set sigma                                = .5
   set sigma_star                           = .6
 
-  set div-grad stabilization parameter     = 0.1 #0.09999
+  set SUPG alpha                           = 1.0
+  set div-grad stabilization parameter     = 0.9 #0.09999
 end
 
 subsection Dirichlet boundary conditions

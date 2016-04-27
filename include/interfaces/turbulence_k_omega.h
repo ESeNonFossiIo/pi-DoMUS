@@ -19,6 +19,24 @@
 #include <deal2lkit/parsed_preconditioner_amg.h>
 #include <deal2lkit/parsed_preconditioner_jacobi.h>
 
+namespace KWUtilities
+{
+
+  ////////////////////////////////////////////////////////////////////////////////
+  /// Used functions:
+
+    double get_double(Sdouble num)
+    {
+      return num.val();
+    }
+
+    double get_double(double num)
+    {
+      return num;
+    }
+
+}
+
 template <int dim, int spacedim=dim, typename LAC=LATrilinos>
 class KOmega
   :
@@ -108,10 +126,17 @@ private:
    */
   double sigma_star;
 
+  // STABILIZATION:
+  //////////////////////////////////////////// 
   /**
    * div-grad stabilization parameter
    */
   double gamma;
+
+  /**
+   * SUPG stabilization term
+   */
+  double SUPG_alpha;
 
   /**
    * p-q stabilization parameter
@@ -191,6 +216,10 @@ declare_parameters (ParameterHandler &prm)
                       "div-grad stabilization parameter", "0.0",
                       Patterns::Double(0.0),
                       "");
+  this->add_parameter(prm, &SUPG_alpha,
+                    "SUPG alpha", "0.0",
+                    Patterns::Double(0.0),
+                    "Use SUPG alpha");                        
   this->add_parameter(prm, &rho,
                       "rho [kg m^3]", "1.0",
                       Patterns::Double(0.0),
@@ -259,6 +288,8 @@ energies_and_residuals(const typename DoFHandler<dim,spacedim>::active_cell_iter
   const FEValuesExtractors::Scalar kinetic_energy(dim+1);
   const FEValuesExtractors::Scalar turbulence_frequency(dim+2);
 
+  double h = cell->diameter();
+  
   ResidualType et = 0;
   double dummy = 0.0;
   // dummy number to define the type of variables
@@ -393,7 +424,13 @@ energies_and_residuals(const typename DoFHandler<dim,spacedim>::active_cell_iter
             nl_u = grad_u * ue;
           else if (non_linear_term=="RHS")
             nl_u = grad_ue * ue;
-          res += rho * scalar_product(nl_u,u_test);
+            double norm = std::sqrt(KWUtilities::get_double(ue*ue));
+            
+            if(norm > 0 && SUPG_alpha > 0)
+              res += rho * scalar_product( nl_u, u_test + SUPG_alpha * (h/norm) * grad_u_test  * ue);
+            else
+              res += rho * scalar_product( nl_u, u_test);
+
 
           // Turbulent term:
           res += rho * scalar_product(tau, grad_u_test);
