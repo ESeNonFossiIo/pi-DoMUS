@@ -28,7 +28,7 @@ class KOmega
 
 public:
   ~KOmega () {};
-  KOmega ();
+  KOmega (piDoMUS<dim,spacedim,LAC> &distance);
 
   void declare_parameters (ParameterHandler &prm);
   void parse_parameters_call_back ();
@@ -52,7 +52,22 @@ public:
   void
   set_matrix_couplings(std::vector<std::string> &couplings) const;
 
+  virtual void connect_to_signals() const
+  {
+    auto &signals = this->get_signals();
+    auto &pcout = this->get_pcout();
+    signals.begin_make_grid_fe.connect(
+      [&]()
+    {
+      distance.run ();
+    });
+  }
 private:
+  /**
+   * TODO: Distance
+   */
+  piDoMUS<dim,spacedim,LAC> &distance;
+
   /**
    * Determine to handle \f$ (\nabla u)u \f$.
    */
@@ -164,15 +179,16 @@ private:
 
 template <int dim, int spacedim, typename LAC>
 KOmega<dim,spacedim, LAC>::
-KOmega()
+KOmega(piDoMUS<dim,spacedim,LAC> &distance)
   :
   PDESystemInterface<dim,spacedim,KOmega<dim,spacedim,LAC>, LAC>(
-    "k-omega",
+    "KOmegaInterface",
     dim+3,
     3,
     "FESystem[FE_Q(2)^d-FE_Q(1)-FE_Q(1)-FE_Q(1)]",
     (dim==3) ? "u,u,u,p,k,w" : "u,u,p,k,w",
     "1,0,1,1"),
+  distance(distance),
   amg_A("Amg for A"),
   amg_Ap("Amg for Ap"),
   amg_k("Amg for k"),
