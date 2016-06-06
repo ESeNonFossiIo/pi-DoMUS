@@ -20,6 +20,8 @@
 #include <deal2lkit/parsed_preconditioner/amg.h>
 #include <deal2lkit/parsed_preconditioner/jacobi.h>
 
+#include "interfaces/eikonal_equation_two_steps.h"
+
 template <int dim, int spacedim=dim, typename LAC=LATrilinos>
 class KOmega
   :
@@ -52,6 +54,20 @@ public:
   void
   set_matrix_couplings(std::vector<std::string> &couplings) const;
 
+  virtual void connect_to_signals() const
+  {
+    auto &signals = this->get_signals();
+    auto &pcout = this->get_pcout();
+    signals.begin_make_grid_fe.connect(
+      [&]()
+    {
+      EikonalEquation<dim,spacedim,LAC> p;
+      piDoMUS<dim,spacedim,LAC> solver ("EikonalEquation/pidomus", p);
+      ParameterAcceptor::initialize(
+        "parameters.prm",
+        "used_eikonal_parameters.prm");
+    });
+  }
 private:
   /**
    * Determine to handle \f$ (\nabla u)u \f$.
