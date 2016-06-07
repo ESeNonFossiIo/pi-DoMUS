@@ -28,7 +28,7 @@ class KOmega
 
 public:
   ~KOmega () {};
-  KOmega (piDoMUS<dim,spacedim,LAC> &distance);
+  KOmega (piDoMUS<dim,spacedim,LAC> &distance, std::string interface_name = "Interface");
 
   void declare_parameters (ParameterHandler &prm);
   void parse_parameters_call_back ();
@@ -179,10 +179,10 @@ private:
 
 template <int dim, int spacedim, typename LAC>
 KOmega<dim,spacedim, LAC>::
-KOmega(piDoMUS<dim,spacedim,LAC> &distance)
+KOmega(piDoMUS<dim,spacedim,LAC> &distance, std::string interface_name)
   :
   PDESystemInterface<dim,spacedim,KOmega<dim,spacedim,LAC>, LAC>(
-    "KOmegaInterface",
+    interface_name,
     dim+3,
     3,
     "FESystem[FE_Q(2)^d-FE_Q(1)-FE_Q(1)-FE_Q(1)]",

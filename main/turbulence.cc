@@ -16,13 +16,13 @@
 #include <string>
 
 #define problem(dim,spacedim,LAC) \
-  EikonalEquation<dim,spacedim,LAC> distance_energy; \
+  EikonalEquation<dim,spacedim,LAC> distance_energy ("/EikonalEquation/Interface"); \
   piDoMUS<dim,spacedim,LAC> distance ( \
-                                       "EikonalEquation/DistanceSolver", \
+                                       "/EikonalEquation/DistanceSolver", \
                                        distance_energy); \
-  KOmega<dim,spacedim,LAC> k_omega_energy(distance); \
+  KOmega<dim,spacedim,LAC> k_omega_energy(distance, "/KOmega/Interface"); \
   piDoMUS<dim,spacedim,LAC> k_omega ( \
-                                      "KOmega/KOmegaSolver", \
+                                      "/KOmega/KOmegaSolver", \
                                       k_omega_energy); \
   ParameterAcceptor::initialize(prm_file, model_name+"_used.prm"); \
   k_omega.run ();
