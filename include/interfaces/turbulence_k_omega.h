@@ -15,6 +15,7 @@
 
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/solver_gmres.h>
+#include <deal.II/numerics/fe_field_function.h>
 
 #include <deal2lkit/sacado_tools.h>
 #include <deal2lkit/parsed_preconditioner/amg.h>
@@ -59,7 +60,31 @@ public:
     signals.begin_make_grid_fe.connect(
       [&]()
     {
+      pcout << std::endl
+            << " --------------------------------------------------------------"
+            << std::endl
+            << " --------------------- Eikonal Equation -----------------------"
+            << std::endl
+            << " --------------------------------------------------------------"
+            << std::endl << std::endl;
       distance.run ();
+      pcout << std::endl
+            << " --------------------------------------------------------------"
+            << std::endl
+            << " --------------------- Eikonal Equation -----------------------"
+            << std::endl
+            << " --------------------------------------------------------------"
+            << std::endl << std::endl;
+      const typename LAC::VectorType &distance_sol = distance.get_solution();
+      const DoFHandler<dim,spacedim> &distance_dh  = distance.get_dof_handler();
+      Functions::FEFieldFunction<dim, DoFHandler<dim,spacedim>, typename LAC::VectorType> dist(distance_dh, distance_sol);
+      {
+        Point<spacedim> p;
+        p[0] = 0.5;
+        p[1] = 0.5;
+        pcout << "-->" << dist.value(p,0) << std::endl;
+      }
+      // 
     });
   }
 private:

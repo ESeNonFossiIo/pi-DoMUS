@@ -319,7 +319,7 @@ subsection EikonalEquation
   subsection KINSOL for IMEX
     set Level of verbosity of the KINSOL solver            = 0
     set Maximum number of iteration before Jacobian update = 1
-    set Maximum number of iterations                       = 200
+    set Maximum number of iterations                       = 50
     set Step tolerance                                     = 1e-7
     set Strategy                                           = newton
     set Tolerance for residuals                            = 1e-7
@@ -344,10 +344,10 @@ subsection EikonalEquation
   subsection DistanceSolver
     set Adaptive refinement                            = true
     set Enable finer preconditioner                    = true
-    set Initial global refinement                      = 4
+    set Initial global refinement                      = 2
     set Jacobian solver tolerance                      = 1e-8
     set Max iterations                                 = 50
-    set Max iterations finer prec.                     = 20
+    set Max iterations finer prec.                     = 30
     set Max tmp vectors                                = 30
     set Max tmp vectors for finer system               = 50
     set Maximum number of time steps                   = 10000
