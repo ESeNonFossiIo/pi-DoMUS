@@ -84,7 +84,7 @@ public:
         p[1] = 0.5;
         pcout << "-->" << dist.value(p,0) << std::endl;
       }
-      // 
+      //
     });
   }
 private:

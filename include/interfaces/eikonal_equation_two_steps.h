@@ -115,10 +115,10 @@ template <int dim, int spacedim, typename LAC>
 EikonalEquation<dim,spacedim, LAC>::
 EikonalEquation(std::string interface_name):
   PDESystemInterface<dim,spacedim,EikonalEquation<dim,spacedim,LAC>, LAC >(
-      interface_name,
-      2, 1,
-      "FESystem[FE_Q(1)-FE_Q(1)]",
-      "d,a","1,1"),
+    interface_name,
+    2, 1,
+    "FESystem[FE_Q(1)-FE_Q(1)]",
+    "d,a","1,1"),
   AMG_A("AMG A"),
   AMG_B("AMG B")
 {}
