@@ -2,16 +2,28 @@
 ################################################################################
 subsection Exact solution
   set Function constants  = 
-  set Function expression = 0;0;1; 1; 0;0;0
+  set Function expression = 0;0;1;1;0;1;1
   set Variable names      = x,y,t
 end
 
 subsection Dirichlet boundary conditions
-  set IDs and component masks = 0=u
-  set IDs and expressions     = 0=0;0;1;1;0;0;0
+  set IDs and component masks = 0=d;u;p;v
+  set IDs and expressions     = 0=0;0;1;1;0;1;1
   set Known component names   = d,d,u,u,p,v,v
   set Used constants          = 
 end
+
+# subsection Initial solution
+#   set Function constants  =
+#   set Function expression = 0=0;0;1;1;0;1;1
+#   set Variable names      = x,y,t
+# end
+# 
+# subsection Initial solution_dot
+#   set Function constants  =
+#   set Function expression = 0; 0; 0; 0; 0; 0; 0;
+#   set Variable names      = x,y,t
+# end
 
 # Solver
 ################################################################################
@@ -24,12 +36,15 @@ subsection ALE Navier Stokes Interface
 end
 subsection AMG for d
   set Aggregation threshold              = 1
+  set Variable related to constant modes = d
 end
 subsection AMG for u
   set Aggregation threshold              = 1
+  set Variable related to constant modes = u
 end
 subsection AMG for v
   set Aggregation threshold              = 1
+  set Variable related to constant modes = v
 end
 subsection Jacobi for M
   set Omega            = 1.4
@@ -58,11 +73,11 @@ subsection Error Tables
   end
 end
 subsection IMEX Parameters
-  set Absolute error tolerance                     = 1.0e-12
+  set Absolute error tolerance                     = 1.0e-8
   set Final time                                   = 0.4
   set Initial time                                 = 0.0
   set Print useful informations                    = false
-  set Relative error tolerance                     = 1.0e-10
+  set Relative error tolerance                     = 1.0e-6
   set Step size                                    = 2.0e-1
   set Use the KINSOL solver                        = true
 end
@@ -73,11 +88,11 @@ subsection KINSOL for IMEX
   set Strategy                                           = global_newton
   set Use internal KINSOL direct solver                  = false
 end
-subsection piDoMUS<2, 2, LATrilinos>
+subsection piDoMUS<2, 2, LADealII>
   set Adaptive refinement                            = false
-  set Initial global refinement                      = 3
-  set Jacobian solver tolerance                      = 1e-4
+  set Initial global refinement                      = 5
+  set Jacobian solver tolerance                      = 1e-6
   set Number of cycles                               = 1
   set Time stepper                                   = euler
-  set Use direct solver if available                 = false
+  set Use direct solver if available                 = true
 end

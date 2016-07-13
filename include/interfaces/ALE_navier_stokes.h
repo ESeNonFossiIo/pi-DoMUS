@@ -355,14 +355,13 @@ energies_and_residuals(const typename DoFHandler<dim,spacedim>::active_cell_iter
           // Navier Stokes:
           res_u = J_ale * (
 // time derivative term
-                    + rho * scalar_product(
+                        rho * scalar_product(
                       u_dot + grad_u * ( F_inv * ( u_old - d_dot ) ), u_test )
 //
                     + scalar_product(sigma * Ft_inv, grad_u_test ))
 // divergence free constriant
                   - div_v * p_test
                   + (v - J_ale * F_inv * u_old) * v_test;
-          // - scalar_product(J_ale * F_inv * u, grad_p_test); // TODO: muovere la divergenza a sinistra! se no c'é anche l'integrale sul bordo.
 
           // ALE:
           res_d =
